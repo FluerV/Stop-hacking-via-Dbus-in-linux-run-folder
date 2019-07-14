@@ -82,8 +82,11 @@ comment all lines.
 
 2.5 in /etc/xdg/autostart search for ..ssh.desktop, ..gnome-keyring and similar files and delete packages. 
 
-2.6 Remove gnome (apt purge gnome*), pinentry-gnome3, libatk-adaptor, at-spi2-core and other packages that brings remote acsess and dbus activity  to your machine.
-You can use "apt purge --auto-remove <package>" to delete config and unnecessary files. But be careful with autoremove. 
+2.6 Remove gnome (apt purge gnome*), pinentry-gnome3, libatk-adaptor, at-spi2-core and other packages that brings remote acsess and dbus activity  to your machine. You can use 
+
+    "apt purge --auto-remove <package>" 
+     
+to delete config and unnecessary files. But be careful with autoremove. 
 
 If sometimes you can't find package's file to edit it or remove package because it broken run this set of command (root):
 
