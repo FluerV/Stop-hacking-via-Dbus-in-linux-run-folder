@@ -15,14 +15,23 @@ In /usr/bin/startx file change the line "unset DBUS_SESSION_BUS_ADDRESS" to "DBU
 2.2 in etc/xdg/xfce4/xinitrc find and comment (delete) the following lines:
 
 #use dbus-launch if installed
-#if test x"$DBUS_SESSION_BUS_ADDRESS" = x""; then 
+
+#if test x"$DBUS_SESSION_BUS_ADDRESS" = x""; then
+
 #if which dbus-launch >/dev/null 2>&1; then
+
 #eval `dbus-launch --sh-syntax --exit-with-session`
+
     # some older versions of dbus don't export the var properly
+    
     # export DBUS_SESSION_BUS_ADDRESS
-    # else 
+    
+    # else
+    
     # echo "Could not find dbus-launch; Xfce will not work properly" >&2 
+    
  #fi
+ 
 #fi
 
 
