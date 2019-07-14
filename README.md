@@ -1,10 +1,11 @@
-Prevent hacking via Dbus in linux  /run/user folder
-
 In most cases hackers tries to use low-level dbus-daemon (chat or something similar) for sending and receiving theirs messages. In most linux distro you can't complitelly remove dbus-daemon without breaking your desktop environment. Вut you should reduce activity of per-session message bus as much as possible. When you notice third-party activity on your Linux machine you need to look at some important directories and files, which bring per-session message bus to the active session.
+
 Note: this instruction doesn't complitelly remove hacker's activity from your machine but can reduce it. Remember: IT security is a process, not a result!:)
-Check active users in "run/user" folder
+
+1. Check active users in "run/user" folder
 This directory include user's files, compiling "on-the-fly". You can check users directories in /run/user folder manually or via "systemctl" command (sometimes hackers doesn't put phisicalies folders).  If you are only user of your linux computer this directory should include /run/user/1000 folder and nothing else. 
 But if you see another one folder here with UID less then 1000 it's time to start worries (example: /run/user/113).
+
 2. Prevent activity of per-session message bus
 
 2.1 in startx point Dbus to /dev/null 
@@ -13,15 +14,15 @@ In /usr/bin/startx file change the line "unset DBUS_SESSION_BUS_ADDRESS" to "DBU
 
 2.2 in etc/xdg/xfce4/xinitrc find and comment (delete) the following lines:
 
-# Use dbus-launch if installed.
-#if test x"$DBUS_SESSION_BUS_ADDRESS" = x""; then
-#  if which dbus-launch >/dev/null 2>&1; then
-#    eval `dbus-launch --sh-syntax --exit-with-session`
+#use dbus-launch if installed
+#if test x"$DBUS_SESSION_BUS_ADDRESS" = x""; then 
+#if which dbus-launch >/dev/null 2>&1; then
+#eval `dbus-launch --sh-syntax --exit-with-session`
     # some older versions of dbus don't export the var properly
-#    export DBUS_SESSION_BUS_ADDRESS
-#  else
-#    echo "Could not find dbus-launch; Xfce will not work properly" >&2
-#    fi
+    # export DBUS_SESSION_BUS_ADDRESS
+    # else 
+    # echo "Could not find dbus-launch; Xfce will not work properly" >&2 
+ #fi
 #fi
 
 
