@@ -10,7 +10,11 @@ But if you see another one folder here with UID less then 1000 it's time to star
 
 2.1 in startx point Dbus to /dev/null 
 
-In /usr/bin/startx file change the line "unset DBUS_SESSION_BUS_ADDRESS" to "DBUS_SESSION_BUS_ADDRESS=/dev/null".
+In /usr/bin/startx file change the line
+     
+    "unset DBUS_SESSION_BUS_ADDRESS" 
+     to 
+    "DBUS_SESSION_BUS_ADDRESS=/dev/null".
 
 2.2 in etc/xdg/xfce4/xinitrc find and comment (delete) the following lines:
 
@@ -39,42 +43,42 @@ These packages brings Dbus activity in Xsession's environment. It's better to re
 But removing dbus-user-session will breaks your system (because of hard dependencies) and bring it in single user mode.  
 dbus-user-session checks active users in /run/user folder and bring per-session message bus in the desktop environment.
 You can kill  dbus-user-session activity by editing config file in /etc/X11/Xsession.d/20dbus_xdg-runtime (see below) or 
- comment all lines.  
+comment all lines.  
  
-# vim:set ft=sh sw=2 sts=2 et:
+    # vim:set ft=sh sw=2 sts=2 et:
 
-if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then 
-  # We are under systemd-logind or something remarkably similar, and
-  # a user-session socket has already been set up.
-  #
-  # Be nice to non-libdbus, non-sd-bus implementations by using
-  # that as the session bus address in the environment. The check for
-  # XDG_RUNTIME_DIR = "/run/user/`id -u`" is because we know that
-  # form of the address, from systemd-logind, doesn't need escaping,
-  # whereas arbitrary addresses might.
-  DBUS_SESSION_BUS_ADDRESS="unix:path=/dev/null"
-  export DBUS_SESSION_BUS_ADDRESS
-fi
+    if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then 
+    # We are under systemd-logind or something remarkably similar, and
+    # a user-session socket has already been set up.
+    #
+    # Be nice to non-libdbus, non-sd-bus implementations by using
+    # that as the session bus address in the environment. The check for
+    # XDG_RUNTIME_DIR = "/run/user/`id -u`" is because we know that
+    # form of the address, from systemd-logind, doesn't need escaping,
+    # whereas arbitrary addresses might.
+    DBUS_SESSION_BUS_ADDRESS="unix:path=/dev/null"
+    export DBUS_SESSION_BUS_ADDRESS
+    fi
 
-#if [ -x "/usr/bin/dbus-update-activation-environment" ]; then
-  # tell dbus-daemon --session (and systemd --user, if running)
-  # to put a minimal subset of the Xsession's environment in activated
-  # services' environments
- #dbus-update-activation-environment --verbose --systemd \
-   #DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
-#fi  
+    #if [ -x "/usr/bin/dbus-update-activation-environment" ]; then
+    # tell dbus-daemon --session (and systemd --user, if running)
+    # to put a minimal subset of the Xsession's environment in activated
+    # services' environments
+    #dbus-update-activation-environment --verbose --systemd \
+     #DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+    #fi  
 
 2.4 File  etc/x11/Xsession.options should looks like that:
 
-# $Id: Xsession.options 189 2005-06-11 00:04:27Z branden $
-#
-# configuration options for /etc/X11/Xsession
-# See Xsession.options(5) for an explanation of the available options.
-allow-failsafe
-#no-allow-user-resources
-#no-allow-user-xsession
-#no-use-ssh-agent
-#no-use-session-dbus
+    # $Id: Xsession.options 189 2005-06-11 00:04:27Z branden $
+    #
+    # configuration options for /etc/X11/Xsession
+    # See Xsession.options(5) for an explanation of the available options.
+    allow-failsafe
+    #no-allow-user-resources
+    #no-allow-user-xsession
+    #no-use-ssh-agent
+    #no-use-session-dbus
 
 2.5 in /etc/xdg/autostart search for ..ssh.desktop, ..gnome-keyring and similar files and delete packages. 
 
@@ -83,37 +87,37 @@ You can use "apt purge --auto-remove <package>" to delete config and unnecessary
 
 If sometimes you can't find package's file to edit it or remove package because it broken run this set of command (root):
 
-dpkg --purge --force-depends <package>
-apt install <package>
+    dpkg --purge --force-depends <package>
+    apt install <package>
 
 or
 
-apt --fix-broken install
+    apt --fix-broken install
 
 2.7 Don't use gnome, kde etc. The most safe desktop environment is xfce. 
-
-(Link on Geoclue). 
 
 3. Some helpfull command (root).
 
 3.1 To understand what package a file belongs to:
 
-dpkg -S <package name>
+    dpkg -S <package name>
 
 3.2 To list all package's file:
 
-dpkg -L <package name>
+    dpkg -L <package name>
 
 3.3 To see all info about package:
 
- apt-cache show <package name>
+    apt-cache show <package name>
 
 3.4 Backup your machine with Clonezilla. 
 
 3.5 Sometimes you can break your system, removing some packages. Don't worry. You can restore your Clonezilla backup. If there is no backup you can boot in single user mode and write in terminal:
-apt --fix-broken install
+
+    apt --fix-broken install
 
 For that reason it's much better to install linux from DVD (Flash). If your broken system doesn't connect to the internet you always can use your DVD (Flash) installation disk and repaire your linux machine with "apt --fix-broken install" in command line.
+
 4. Final thoughts
 
 After these steps  unwanted user will dissapier from /run/user folder, but hacker can use extra session (for example session 2 of legal user), temporarily join to your display "on-the-fly" via ssh  etc. 
